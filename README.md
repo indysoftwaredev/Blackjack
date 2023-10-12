@@ -6,5 +6,9 @@ Homework Project for Praeses
 - C#
 - xUnit
 
+**Blackjack.App**
+- Set as Startup Project to run
+- Contains all business functionality.
+
 **BlackJack.UnitTests**
 - Contains tests for core business logic
