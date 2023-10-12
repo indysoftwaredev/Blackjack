@@ -8,6 +8,6 @@ namespace Blackjack.App
 {
     public class Card
     {
-        public IEnumerable<char> Name { get; set; } = "Ace of Spades";
+        public IEnumerable<char> Name { get; set; }
     }
 }

@@ -8,9 +8,28 @@ namespace Blackjack.App
 {
     public class Deck
     {
+        private List<Card> _cards;
+
+        public Deck()
+        {
+            _cards = new List<Card>
+            {
+                new Card
+                {
+                    Name = "Ace of Spades"
+                },
+                new Card
+                {
+                    Name = "King of Spades"
+                }
+            };
+        }
+
         public Card Deal()
         {
-            return new Card();
+            Card card = _cards.Take(1).First();
+            _cards.RemoveAt(0);
+            return card;
         }
     }
 }
