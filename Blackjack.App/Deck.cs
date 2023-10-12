@@ -76,5 +76,41 @@ namespace Blackjack.App
             _cards.RemoveAt(0);
             return card;
         }
+
+        public Card GetCardAt(int position)
+        {
+            return _cards[position];
+        }
+
+        /// <summary>
+        /// Utilizes the Fisher-Yates Shuffle algorithm
+        /// <see cref="" href="https://en.wikipedia.org/wiki/Fisher–Yates_shuffle"/>
+        /// </summary>
+        public void Shuffle()
+        {
+            Random rng = new Random();
+            int lastCardIndex = _cards.Count;
+
+            while (lastCardIndex > 1)
+            {
+                lastCardIndex--;
+                int randomPosition = rng.Next(lastCardIndex + 1); //select from the range
+
+                //swap with last card
+                Card card = _cards[randomPosition];
+                _cards[randomPosition] = _cards[lastCardIndex];
+                _cards[lastCardIndex] = card;
+            }
+        }
+
+        internal void ListContents()
+        {
+            int pos = 0;
+            foreach (Card card in _cards)
+            {
+                Console.WriteLine($"Assert.Equal(\"{card.Name}\", deck.GetCardAt({pos}).Name);");
+                pos++;
+            }
+        }
     }
 }

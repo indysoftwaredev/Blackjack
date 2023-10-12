@@ -1,2 +1,5 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using Blackjack.App;
+
+Deck deck = new Deck();
+deck.Shuffle();
+deck.ListContents();
