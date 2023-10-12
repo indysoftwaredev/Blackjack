@@ -20,12 +20,25 @@ namespace BlackJack.UnitTests
         }
 
         [Fact]
-        public void Deal_NewDeck_SecondCardShouldBeKingOfSpades()
+        public void Deal_NewDeck_SecondCardShouldBeTwoOfSpades()
         {
             Deck deck = new Deck();
             deck.Deal();
             Card card = deck.Deal();
-            Assert.Equal("King of Spades", card.Name);
+            Assert.Equal("Two of Spades", card.Name);
+        }
+
+        [Fact]
+        public void Deal_NewDeck_52ndCardShouldBeKingOfDiamonds()
+        {
+            Deck deck = new Deck();
+
+            for (int i = 0; i < 51; i++)
+            {
+                deck.Deal();
+            }
+            Card card = deck.Deal();
+            Assert.Equal("King of Diamonds", card.Name);
         }
     }
 }
