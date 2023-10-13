@@ -21,7 +21,6 @@ namespace Blackjack.App
         { 
             get
             {
-                
                 return CalculateTotal(NumberOfAces(), BasicTotal());
             }
         }
@@ -38,16 +37,7 @@ namespace Blackjack.App
             if(numberOfAces == 0) { return total; }
             if(total <= TARGET_MAX_TOTAL) { return total; }
 
-            return CalculateTotal(--numberOfAces, total -10);
-
-            //total -= 10;
-            //if(total > TARGET_MAX_TOTAL)
-            //{
-                
-            //}
-
-            //return total;
-            
+            return CalculateTotal(--numberOfAces, total - 10);            
         }
 
         private int NumberOfAces()
