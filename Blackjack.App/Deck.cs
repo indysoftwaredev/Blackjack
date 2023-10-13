@@ -10,7 +10,6 @@ namespace Blackjack.App
     {
         private List<Card> _cards;
 
-
         public Deck()
         {
             _cards = new List<Card>

@@ -9,12 +9,13 @@ namespace Blackjack.App
     public class Card
     {
 
-        public Suit Suit { get; set; }
-        public int Value { get; set; }
+        public Suit Suit { get; }
+        public int Rank { get; }
 
-        public Card(int value, Suit suit)
+        public Card(int rank, Suit suit)
         {
-            Value = value;
+            if(rank > 13 || rank < 1) { throw new ArgumentException("Card rank must be between 1 and 13"); }
+            Rank = rank;
             Suit = suit;
         }
 
@@ -22,13 +23,28 @@ namespace Blackjack.App
         {
             get
             {
-                return $"{ConvertValueToName(Value)} of {ConvertSuitToName(Suit)}";
+                return $"{ConvertRankToName()} of {ConvertSuitToName(Suit)}";
             }
         }
 
-        private String ConvertValueToName(int value)
+        public int Value
         {
-            switch(value)
+            get
+            {
+                switch(Rank)
+                {
+                    case 1: return 11;
+                    case 11: return 10;
+                    case 12: return 10;
+                    case 13: return 10;
+                    default: return Rank;
+                }
+            }
+        }
+
+        private String ConvertRankToName()
+        {
+            switch(Rank)
             {
                 case 1: return "Ace";
                 case 2: return "Two";
@@ -43,7 +59,7 @@ namespace Blackjack.App
                 case 11: return "Jack";
                 case 12: return "Queen";
                 case 13: return "King";
-                default: throw new ArgumentException("Valid Values for cards are 1 thru 13 only");
+                default: throw new ArgumentException("Card rank must be between 1 and 13");
             }
         }
 
