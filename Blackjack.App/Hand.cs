@@ -38,13 +38,15 @@ namespace Blackjack.App
             if(numberOfAces == 0) { return total; }
             if(total <= TARGET_MAX_TOTAL) { return total; }
 
-            total -= 10;
-            if(total > TARGET_MAX_TOTAL)
-            {
-                return CalculateTotal(--numberOfAces, total);
-            }
+            return CalculateTotal(--numberOfAces, total -10);
 
-            return total;
+            //total -= 10;
+            //if(total > TARGET_MAX_TOTAL)
+            //{
+                
+            //}
+
+            //return total;
             
         }
 
