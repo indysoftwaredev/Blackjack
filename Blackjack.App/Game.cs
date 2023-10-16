@@ -9,6 +9,7 @@ namespace Blackjack.App
 {
     public class Game
     {
+        private static int MAX_PLAYERS = 7;
         private readonly IInteractionService _interactionService;
 
         public Game(IInteractionService interactionService)
@@ -20,7 +21,7 @@ namespace Blackjack.App
 
         public void Setup()
         {
-            int numberOfPlayers = _interactionService.GetNumberOfPlayers();
+            int numberOfPlayers = _interactionService.GetNumberOfPlayers(MAX_PLAYERS);
 
             for(int i = 0; i < numberOfPlayers; i++)
             {

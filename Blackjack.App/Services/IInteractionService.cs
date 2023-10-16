@@ -8,6 +8,6 @@ namespace Blackjack.App.Services
 {
     public interface IInteractionService
     {
-        public int GetNumberOfPlayers();
+        public int GetNumberOfPlayers(int maximumNumberOfPlayers);
     }
 }

@@ -21,7 +21,7 @@ namespace BlackJack.UnitTests
         public void Setup_AsksForOnePlayer_CreatesOnePlayer()
         {
             var interactionServiceMock = new Mock<IInteractionService>();
-            interactionServiceMock.Setup(m => m.GetNumberOfPlayers()).Returns(1);
+            interactionServiceMock.Setup(m => m.GetNumberOfPlayers(It.IsAny<int>())).Returns(1);
 
             Game game = new Game(interactionServiceMock.Object);
             game.Setup();
@@ -33,7 +33,7 @@ namespace BlackJack.UnitTests
         public void Setup_AsksForTwoPlayers_CreatesTwoPlayers()
         {
             var interactionServiceMock = new Mock<IInteractionService>();
-            interactionServiceMock.Setup(m => m.GetNumberOfPlayers()).Returns(2);
+            interactionServiceMock.Setup(m => m.GetNumberOfPlayers(It.IsAny<int>())).Returns(2);
 
             Game game = new Game(interactionServiceMock.Object);
             game.Setup();
