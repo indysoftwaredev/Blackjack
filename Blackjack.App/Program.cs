@@ -1,27 +1,18 @@
 ﻿using Blackjack.App;
-using System.Runtime.CompilerServices;
+using Blackjack.App.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 Deck deck = new Deck();
 deck.Shuffle();
 deck.ListContents();
 
-//while (_inSetup)
-//{
-//    Console.Clear();
-//    Console.WriteLine("How Many Players?");
-//    string? numberOfPlayersString = Console.ReadLine();
-//    if (numberOfPlayersString != null)
-//    {
-//        if(int.TryParse(numberOfPlayersString, out numberOfPlayers))
-//        {
-//            if(numberOfPlayers > 0) { _inSetup = false; }
-//        }
-//    }
-//}
+var provider = new ServiceCollection()
+               .AddSingleton<IInteractionService, InteractionService>()
+               .BuildServiceProvider();
 
+Game game = new Game(provider.GetRequiredService<IInteractionService>());
 
-
-Console.WriteLine("Finished Setup");
+game.Setup();
 
 
 /*while(_isRunning)
