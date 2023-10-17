@@ -1,5 +1,6 @@
 ﻿using Blackjack.App;
 using Blackjack.App.Services;
+using BlackJack.UnitTests.Fixtures;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,8 @@ namespace BlackJack.UnitTests
 {
     public class GameTest
     {
+        private IInteractionService interactionService = new InteractionServiceFake();
+
         [Fact]
         public void Tests_Are_Working()
         {
@@ -44,9 +47,22 @@ namespace BlackJack.UnitTests
         [Fact]
         public void Construct_HasADealer()
         {
-            var interactionServiceMock = new Mock<IInteractionService>();
-            Game game = new Game(interactionServiceMock.Object);
+            Game game = new Game(interactionService);
             Assert.NotNull(game.Dealer);
+        }
+
+        [Fact]
+        public void Construct_CreatesDeck()
+        {
+            Game game = new Game(interactionService);
+            Assert.NotNull(game.Deck);
+        }
+
+        [Fact]
+        public void Construct_CreatesDeckWith312Cards()
+        {
+            Game game = new Game(interactionService);
+            Assert.Equal(312, game.Deck.NumberOfCards);
         }
     }
 }

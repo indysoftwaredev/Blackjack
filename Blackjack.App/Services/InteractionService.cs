@@ -8,7 +8,7 @@ namespace Blackjack.App.Services
 {
     public class InteractionService : IInteractionService
     {
-        public void display(string message)
+        public void Display(string message)
         {
             Console.WriteLine(message);
         }
@@ -20,7 +20,7 @@ namespace Blackjack.App.Services
                 return 0;
             }
 
-            display($"How Many Players? (0 to {maximumNumberOfPlayers})");
+            Display($"How Many Players? (0 to {maximumNumberOfPlayers})");
 
             int numOfPlayers = ConversionService.ConvertStringToInt(Console.ReadLine());
             if (numOfPlayers >= 0 && numOfPlayers <= maximumNumberOfPlayers) 
@@ -28,7 +28,7 @@ namespace Blackjack.App.Services
                 return numOfPlayers; 
             }            
 
-            display($"Please Enter a number between 0 and {maximumNumberOfPlayers}");
+            Display($"Please Enter a number between 0 and {maximumNumberOfPlayers}");
             return GetNumberOfPlayers(maximumNumberOfPlayers);
         }
     }

@@ -6,16 +6,14 @@ using System.Threading.Tasks;
 
 namespace Blackjack.App
 {
-    public class Hand
+    public class Hand : List<Card>
     {
         private static int TARGET_MAX_TOTAL = 21;
 
         public Hand(List<Card> cards)
         {
-            Cards = cards;
+            cards.ForEach(c => this.Add(c));
         }
-
-        public List<Card> Cards { get; }
 
         public int Total 
         { 
@@ -28,7 +26,7 @@ namespace Blackjack.App
         private int BasicTotal()
         {
             int total = 0;
-            Cards.ForEach(card => total += card.Value);
+            this.ForEach(card => total += card.Value);
             return total;
         }
 
@@ -37,13 +35,13 @@ namespace Blackjack.App
             if(numberOfAces == 0) { return total; }
             if(total <= TARGET_MAX_TOTAL) { return total; }
 
-            return CalculateTotal(--numberOfAces, total - 10);            
+            return CalculateTotal(--numberOfAces, total - 10);
         }
 
         private int NumberOfAces()
         {
             int count = 0;
-            Cards.ForEach(card =>
+            this.ForEach(card =>
             {
                 if (card.Rank.Equals(1))
                 {

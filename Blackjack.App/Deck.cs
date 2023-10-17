@@ -60,15 +60,5 @@ namespace Blackjack.App
         {
             deck.ForEach(c => this.Add(c));
         }
-
-        internal void ListContents()
-        {
-            int pos = 0;
-            foreach (Card card in this)
-            {
-                Console.WriteLine($"Assert.Equal(\"{card.Name}\", deck.GetCardAt({pos}).Name);");
-                pos++;
-            }
-        }
     }
 }

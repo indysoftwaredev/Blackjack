@@ -1,4 +1,5 @@
-﻿using Blackjack.App.Services;
+﻿using Blackjack.App.Factories;
+using Blackjack.App.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,20 +15,23 @@ namespace Blackjack.App
 
         public Game(IInteractionService interactionService)
         {
-            _interactionService = interactionService;
+            _interactionService = interactionService ?? throw new ArgumentException(nameof(interactionService));
         }
 
         public List<Player> Players { get; set; } = new List<Player>();
 
         public Dealer Dealer { get; set; } = new Dealer();
+        public Deck Deck { get; set; } = DeckFactory.CreateDeck(6);
 
         public void Run()
         {
             Setup();
 
-            
+            while(Players.Count > 0) //main game loop
+            {
+                Deal();
+            }            
         }
-
 
         public void Setup()
         {
@@ -37,6 +41,14 @@ namespace Blackjack.App
             {
                 Players.Add(new Player());
             }
+        }
+
+        public void Deal()
+        {
+            //deal each player a card face up
+            //deal the dealer a card face up
+            //deal each player a card face up
+            //deal each player a card face down
         }
     }
 }

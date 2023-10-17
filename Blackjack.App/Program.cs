@@ -2,10 +2,6 @@
 using Blackjack.App.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-Deck deck = new Deck();
-deck.Shuffle();
-deck.ListContents();
-
 var provider = new ServiceCollection()
                .AddSingleton<IInteractionService, InteractionService>()
                .BuildServiceProvider();
