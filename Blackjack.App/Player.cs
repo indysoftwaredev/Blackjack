@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace Blackjack.App
 {
-    public class Player : List<Hand>
+    public class Player
     {
+        public List<Hand> Hands = new List<Hand>();
 
         public Player()
         {
-            this.Add(new Hand(new List<Card>()));
+            Hands.Add(new Hand(new List<Card>()));
         }
     }
 }

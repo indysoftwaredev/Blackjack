@@ -42,6 +42,9 @@ namespace Blackjack.App
             }
         }
 
+        public bool IsFaceDown { get; set; } = true;
+        public bool IsFaceUp { get { return !IsFaceDown; } }
+
         private String ConvertRankToName()
         {
             switch(Rank)

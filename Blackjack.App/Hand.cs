@@ -15,6 +15,11 @@ namespace Blackjack.App
             cards.ForEach(c => this.Add(c));
         }
 
+        public Hand() : this(new List<Card>())
+        {
+
+        }
+
         public int Total 
         { 
             get

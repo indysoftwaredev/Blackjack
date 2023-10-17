@@ -135,6 +135,83 @@ namespace BlackJack.UnitTests
 
         }
 
+        [Fact]
+        public void Deal_NewDeck_CardIsFaceDown()
+        {
+            Deck deck = new Deck();
+            Card card = deck.Deal();
+
+            Assert.True(card.IsFaceDown);
+        }
+
+        [Fact]
+        public void DealFaceDown_NewDeck_CardIsFaceUp()
+        {
+            Deck deck = new Deck();
+            Card card = deck.DealFaceUp();
+
+            Assert.False(card.IsFaceDown);
+        }
+
+        [Fact]
+        public void Collect_Hand_AppendsHandToBackOfDeck()
+        {
+            Deck deck = new Deck();
+            Hand hand = new Hand();
+
+            Card card = deck.Deal();
+
+            hand.Add(card);
+
+            deck.Collect(hand);
+
+            Assert.Equal(card, deck[deck.Count - 1]);
+        }
+
+        [Fact]
+        public void Collect_Hand_ClearsHand()
+        {
+            Deck deck = new Deck();
+            Hand hand = new Hand();
+            Card card = deck.Deal();
+            hand.Add(card);
+            deck.Collect(hand);
+            Assert.Empty(hand);
+        }
+
+        [Fact]
+        public void Collect_DoesNotTurnFaceUpCardsDown()
+        {
+
+            Deck deck = new Deck();
+            Hand hand = new Hand
+            {
+                deck.DealFaceUp(),
+                deck.DealFaceUp()
+            };
+
+            deck.Collect(hand);
+
+            Assert.True(deck[deck.Count - 1].IsFaceUp);
+            Assert.True(deck[deck.Count - 2].IsFaceUp);
+        }
+
+        [Fact]
+        public void Shuffle_TurnsAllCardsInDeckFaceDown()
+        {
+            Deck deck = new Deck();
+            Hand hand = new Hand
+            {
+                deck.DealFaceUp(),
+                deck.DealFaceUp()
+            };
+
+            deck.Collect(hand);
+            deck.Shuffle();
+
+            deck.ForEach(c => Assert.True(c.IsFaceDown));
+        }
+
         
     }
 }

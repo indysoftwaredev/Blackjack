@@ -30,7 +30,7 @@ namespace Blackjack.App
             while(Players.Count > 0) //main game loop
             {
                 Deal();
-            }            
+            }
         }
 
         public void Setup()
@@ -46,9 +46,16 @@ namespace Blackjack.App
         public void Deal()
         {
             //deal each player a card face up
+            Players.ForEach(p => p.Hands[0].Add(Deck.DealFaceUp()));
+
             //deal the dealer a card face up
+            Dealer.Hands[0].Add(Deck.DealFaceUp());
+
             //deal each player a card face up
-            //deal each player a card face down
+            Players.ForEach(p => p.Hands[0].Add(Deck.DealFaceUp()));
+
+            //deal the dealer a card face down
+            Dealer.Hands[0].Add(Deck.Deal());
         }
     }
 }

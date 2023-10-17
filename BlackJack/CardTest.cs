@@ -65,5 +65,12 @@ namespace BlackJack.UnitTests
         {
             Assert.Throws<ArgumentException>(() => new Card(0, Suit.Spades));
         }
+
+        [Fact]
+        public void Construct_IsFaceDown_ByDefault()
+        {
+            Card card = new Card(1, Suit.Hearts);
+            Assert.True(card.IsFaceDown);
+        }
     }
 }

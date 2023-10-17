@@ -19,7 +19,7 @@ namespace BlackJack.UnitTests
         public void Construct_HasOneEmptyHandInListOfHands()
         {
             Player player = new Player();
-            Assert.Single(player);
+            Assert.Single(player.Hands);
         }
     }
 }

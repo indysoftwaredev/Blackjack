@@ -23,10 +23,23 @@ namespace Blackjack.App
 
         public int NumberOfCards { get { return Count; }  }
 
+        public void Collect(Hand hand)
+        {
+            hand.ForEach(c => this.Add(c));
+            hand.Clear();
+        }
+
         public Card Deal()
         {
             Card card = this.Take(1).First();
             this.RemoveAt(0);
+            return card;
+        }
+
+        public Card DealFaceUp()
+        {
+            Card card = Deal();
+            card.IsFaceDown = false;
             return card;
         }
 
@@ -54,6 +67,8 @@ namespace Blackjack.App
                 this[randomPosition] = this[lastCardIndex];
                 this[lastCardIndex] = card;
             }
+
+            this.ForEach(c => c.IsFaceDown = true);
         }
 
         internal void Add(Deck deck)
