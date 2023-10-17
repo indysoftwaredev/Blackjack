@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Blackjack.App.Factories;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,79 +8,31 @@ using System.Threading.Tasks;
 
 namespace Blackjack.App
 {
-    public class Deck
+    public class Deck : List<Card>
     {
-        private List<Card> _cards;
 
-        public Deck()
+        public Deck() : this(DeckFactory.DefaultDeck)
         {
-            _cards = new List<Card>
-            {
-                new Card(1, Suit.Spades),
-                new Card(2, Suit.Spades),
-                new Card(3, Suit.Spades),
-                new Card(4, Suit.Spades),
-                new Card(5, Suit.Spades),
-                new Card(6, Suit.Spades),
-                new Card(7, Suit.Spades),
-                new Card(8, Suit.Spades),
-                new Card(9, Suit.Spades),
-                new Card(10, Suit.Spades),
-                new Card(11, Suit.Spades),
-                new Card(12, Suit.Spades),
-                new Card(13, Suit.Spades),
-                new Card(1, Suit.Hearts),
-                new Card(2, Suit.Hearts),
-                new Card(3, Suit.Hearts),
-                new Card(4, Suit.Hearts),
-                new Card(5, Suit.Hearts),
-                new Card(6, Suit.Hearts),
-                new Card(7, Suit.Hearts),
-                new Card(8, Suit.Hearts),
-                new Card(9, Suit.Hearts),
-                new Card(10, Suit.Hearts),
-                new Card(11, Suit.Hearts),
-                new Card(12, Suit.Hearts),
-                new Card(13, Suit.Hearts),
-                new Card(1, Suit.Clubs),
-                new Card(2, Suit.Clubs),
-                new Card(3, Suit.Clubs),
-                new Card(4, Suit.Clubs),
-                new Card(5, Suit.Clubs),
-                new Card(6, Suit.Clubs),
-                new Card(7, Suit.Clubs),
-                new Card(8, Suit.Clubs),
-                new Card(9, Suit.Clubs),
-                new Card(10, Suit.Clubs),
-                new Card(11, Suit.Clubs),
-                new Card(12, Suit.Clubs),
-                new Card(13, Suit.Clubs),
-                new Card(1, Suit.Diamonds),
-                new Card(2, Suit.Diamonds),
-                new Card(3, Suit.Diamonds),
-                new Card(4, Suit.Diamonds),
-                new Card(5, Suit.Diamonds),
-                new Card(6, Suit.Diamonds),
-                new Card(7, Suit.Diamonds),
-                new Card(8, Suit.Diamonds),
-                new Card(9, Suit.Diamonds),
-                new Card(10, Suit.Diamonds),
-                new Card(11, Suit.Diamonds),
-                new Card(12, Suit.Diamonds),
-                new Card(13, Suit.Diamonds)
-            };
+            
         }
+
+        public Deck(IEnumerable<Card> collection) : base(collection)
+        {
+            
+        }
+
+        public int NumberOfCards { get { return Count; }  }
 
         public Card Deal()
         {
-            Card card = _cards.Take(1).First();
-            _cards.RemoveAt(0);
+            Card card = this.Take(1).First();
+            this.RemoveAt(0);
             return card;
         }
 
         public Card GetCardAt(int position)
         {
-            return _cards[position];
+            return this[position];
         }
 
         /// <summary>
@@ -88,7 +42,7 @@ namespace Blackjack.App
         public void Shuffle()
         {
             Random rng = new Random();
-            int lastCardIndex = _cards.Count;
+            int lastCardIndex = this.Count;
 
             while (lastCardIndex > 1)
             {
@@ -96,16 +50,21 @@ namespace Blackjack.App
                 int randomPosition = rng.Next(lastCardIndex + 1); //select from the range
 
                 //swap with last card
-                Card card = _cards[randomPosition];
-                _cards[randomPosition] = _cards[lastCardIndex];
-                _cards[lastCardIndex] = card;
+                Card card = this[randomPosition];
+                this[randomPosition] = this[lastCardIndex];
+                this[lastCardIndex] = card;
             }
+        }
+
+        internal void Add(Deck deck)
+        {
+            deck.ForEach(c => this.Add(c));
         }
 
         internal void ListContents()
         {
             int pos = 0;
-            foreach (Card card in _cards)
+            foreach (Card card in this)
             {
                 Console.WriteLine($"Assert.Equal(\"{card.Name}\", deck.GetCardAt({pos}).Name);");
                 pos++;
