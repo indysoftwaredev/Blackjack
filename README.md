@@ -5,6 +5,8 @@ Homework Project for Praeses
 - .Net Core 7
 - C#
 - xUnit
+- Microsoft.Extensions.DependencyInjection
+- Moq
 
 **Blackjack.App**
 - Set as Startup Project to run
