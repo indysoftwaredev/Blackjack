@@ -12,7 +12,7 @@ var provider = new ServiceCollection()
 
 Game game = new Game(provider.GetRequiredService<IInteractionService>());
 
-game.Setup();
+game.Run();
 
 
 /*while(_isRunning)

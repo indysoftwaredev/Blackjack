@@ -9,5 +9,6 @@ namespace Blackjack.App.Services
     public interface IInteractionService
     {
         public int GetNumberOfPlayers(int maximumNumberOfPlayers);
+        public void display(string message);
     }
 }

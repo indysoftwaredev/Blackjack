@@ -19,6 +19,16 @@ namespace Blackjack.App
 
         public List<Player> Players { get; set; } = new List<Player>();
 
+        public Dealer Dealer { get; set; } = new Dealer();
+
+        public void Run()
+        {
+            Setup();
+
+            
+        }
+
+
         public void Setup()
         {
             int numberOfPlayers = _interactionService.GetNumberOfPlayers(MAX_PLAYERS);

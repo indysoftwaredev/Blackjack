@@ -8,6 +8,11 @@ namespace Blackjack.App.Services
 {
     public class InteractionService : IInteractionService
     {
+        public void display(string message)
+        {
+            Console.WriteLine(message);
+        }
+
         public int GetNumberOfPlayers(int maximumNumberOfPlayers)
         {
             if(maximumNumberOfPlayers < 0) //invalid maximum
@@ -15,20 +20,15 @@ namespace Blackjack.App.Services
                 return 0;
             }
 
-            int numOfPlayers = 0;
-            Console.WriteLine($"How Many Players? (0 to {maximumNumberOfPlayers})");
+            display($"How Many Players? (0 to {maximumNumberOfPlayers})");
 
-            string? numberOfPlayersString = Console.ReadLine();
+            int numOfPlayers = ConversionService.ConvertStringToInt(Console.ReadLine());
+            if (numOfPlayers >= 0 && numOfPlayers <= maximumNumberOfPlayers) 
+            { 
+                return numOfPlayers; 
+            }            
 
-            if (numberOfPlayersString != null)
-            {
-                if (int.TryParse(numberOfPlayersString, out numOfPlayers))
-                {
-                    if (numOfPlayers >= 0 && numOfPlayers <= maximumNumberOfPlayers) { return numOfPlayers; }
-                }
-            }
-
-            Console.WriteLine($"Please Enter a number between 0 and {maximumNumberOfPlayers}");
+            display($"Please Enter a number between 0 and {maximumNumberOfPlayers}");
             return GetNumberOfPlayers(maximumNumberOfPlayers);
         }
     }

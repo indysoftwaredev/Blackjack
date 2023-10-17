@@ -40,5 +40,13 @@ namespace BlackJack.UnitTests
 
             Assert.Equal(2, game.Players.Count);
         }
+
+        [Fact]
+        public void Construct_HasADealer()
+        {
+            var interactionServiceMock = new Mock<IInteractionService>();
+            Game game = new Game(interactionServiceMock.Object);
+            Assert.NotNull(game.Dealer);
+        }
     }
 }
