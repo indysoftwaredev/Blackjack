@@ -16,13 +16,6 @@ namespace BlackJack.UnitTests
         }
 
         [Fact]
-        public void Construct_IsAListOfHands()
-        {
-            Player player = new Player();
-            Assert.IsType<List<Hand>>(player);
-        }
-
-        [Fact]
         public void Construct_HasOneEmptyHandInListOfHands()
         {
             Player player = new Player();

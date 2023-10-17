@@ -8,7 +8,6 @@ namespace Blackjack.App
 {
     public class Player : List<Hand>
     {
-        //public List<Hand> Hands { get; set; } = new List<Hand>();
 
         public Player()
         {
