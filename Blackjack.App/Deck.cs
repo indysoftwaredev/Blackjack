@@ -11,7 +11,7 @@ namespace Blackjack.App
     public class Deck : List<Card>
     {
 
-        public Deck() : this(DeckFactory.DefaultDeck)
+        public Deck() : this(new DefaultDeck())
         {
             
         }

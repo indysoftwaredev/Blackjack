@@ -1,6 +1,9 @@
 ﻿using Blackjack.App;
 using Blackjack.App.Services;
 using Microsoft.Extensions.DependencyInjection;
+using System.Text;
+
+Console.OutputEncoding = Encoding.UTF8;
 
 var provider = new ServiceCollection()
                .AddSingleton<IInteractionService, InteractionService>()
@@ -9,6 +12,7 @@ var provider = new ServiceCollection()
 Game game = new Game(provider.GetRequiredService<IInteractionService>());
 
 game.Run();
+
 
 
 /*while(_isRunning)

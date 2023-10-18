@@ -72,5 +72,35 @@ namespace BlackJack.UnitTests
             Card card = new Card(1, Suit.Hearts);
             Assert.True(card.IsFaceDown);
         }
+
+        [Fact]
+        public void Display_AceOfSpades_DisplaysGraphicalRepresentationOfCard()
+        {
+            Card card = new Card(1, Suit.Spades);
+            card.IsFaceDown = false;
+            Assert.Equal("A♠", card.Display);
+        }
+
+        [Fact]
+        public void Display_VariousCards_HaveTheCorrectDisplay()
+        {
+            Assert.Equal("A♥", new Card(1, Suit.Hearts, false).Display);
+            Assert.Equal("2♦", new Card(2, Suit.Diamonds, false).Display);
+            Assert.Equal("3♣", new Card(3, Suit.Clubs, false).Display);
+            Assert.Equal("4♠", new Card(4, Suit.Spades, false).Display);
+            Assert.Equal("T♥", new Card(10, Suit.Hearts, false).Display);
+            Assert.Equal("J♦", new Card(11, Suit.Diamonds, false).Display);
+            Assert.Equal("Q♣", new Card(12, Suit.Clubs, false).Display);
+            Assert.Equal("K♠", new Card(13, Suit.Spades, false).Display);
+        }
+
+        [Fact]
+        public void Display_FaceDownCards_DisplayCardBack()
+        {
+            Card card = new Card(1, Suit.Spades);
+            card.IsFaceDown = true;
+
+            Assert.Equal("🂠", card.Display);
+        }
     }
 }

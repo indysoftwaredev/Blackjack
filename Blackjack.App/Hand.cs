@@ -55,5 +55,13 @@ namespace Blackjack.App
             });
             return count;
         }
+
+        public string Display
+        {
+            get 
+            {
+                return string.Join("", this.Select(c => c.Display));
+            }
+        }
     }
 }

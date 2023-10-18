@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Blackjack.App
 {
-    public class Dealer : Player
+    public class Dealer 
     {
+        public Hand Hand { get; set; } = new Hand();
     }
 }

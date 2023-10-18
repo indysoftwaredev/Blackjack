@@ -26,11 +26,23 @@ namespace Blackjack.App
         public void Run()
         {
             Setup();
+            Shuffle();
 
             while(Players.Count > 0) //main game loop
             {
                 Deal();
+                DisplayHands();
+
+
+                //temporary stop for testing purposes
+                Console.ReadLine();
+            
             }
+        }
+
+        private void Shuffle()
+        {
+            Deck.Shuffle();
         }
 
         public void Setup()
@@ -49,13 +61,41 @@ namespace Blackjack.App
             Players.ForEach(p => p.Hands[0].Add(Deck.DealFaceUp()));
 
             //deal the dealer a card face up
-            Dealer.Hands[0].Add(Deck.DealFaceUp());
+            Dealer.Hand.Add(Deck.DealFaceUp());
 
             //deal each player a card face up
             Players.ForEach(p => p.Hands[0].Add(Deck.DealFaceUp()));
 
             //deal the dealer a card face down
-            Dealer.Hands[0].Add(Deck.Deal());
+            Dealer.Hand.Add(Deck.Deal());
+        }
+
+        private void DisplayHands()
+        {
+            //display all hands should be:
+            //Player #{} 
+            //Hand #{}: Hand.Display (Hand.Total)
+
+            int playerCount = 0;
+            foreach(Player player in Players)
+            {
+                playerCount++;
+                _interactionService.Display($"Player #{playerCount}");
+                int handCount = 0;
+                foreach(Hand hand in player.Hands)
+                {
+                    handCount++;
+                    _interactionService.Display($"    Hand #{handCount}: {hand.Display} = {hand.Total}");
+                    //hand.ForEach(c => _interactionService.Display($"{c.Name} "));
+                }
+            }
+
+
+            //add card back to display for facedown cards
+            //Add Dealer.Hand and delegate to Hands[0] for readability (check against Liskov Substitution Principle)
+            _interactionService.Display($"Dealer: {Dealer.Hand.Display}");
+            //Dealer.Hand.ForEach(c => _interactionService.Display($"{c.Name} "));
+
         }
     }
 }

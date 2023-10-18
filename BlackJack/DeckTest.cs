@@ -1,4 +1,5 @@
 using Blackjack.App;
+using Blackjack.App.Factories;
 using System.ComponentModel.DataAnnotations;
 
 namespace BlackJack.UnitTests
@@ -210,6 +211,39 @@ namespace BlackJack.UnitTests
             deck.Shuffle();
 
             deck.ForEach(c => Assert.True(c.IsFaceDown));
+        }
+
+        [Fact]
+        public void Deal_AllCards_WillBeFaceDownByDefault()
+        {
+            Deck deck = new Deck();
+            
+            List<Card> discards = new List<Card>();
+            while(deck.Count > 0)
+            {
+                discards.Add(deck.Deal());
+            }
+
+            discards.ForEach(c => Assert.True(c.IsFaceDown));
+        }
+
+        [Fact]
+        public void Deal_AllCardsButLastFaceUp_LastCardIsFaceDown()
+        {
+            /* Test and fix bug where if a card is dealt face up, then all
+             * matching cards are also face up. 
+             */
+
+            Deck deck = DeckFactory.CreateDeck(2);
+            while(deck.Count > 1)
+            {
+                deck.DealFaceUp();
+            }
+
+            Card card = deck.Deal();
+
+            Assert.True(card.IsFaceDown);
+
         }
 
         

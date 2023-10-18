@@ -16,7 +16,7 @@ namespace BlackJack.UnitTests
         }
 
         [Fact]
-        public void HandOfAA_Equals_12()
+        public void Total_AandA_Equals_12()
         {
             Hand hand = new Hand(
                 new List<Card>
@@ -29,7 +29,7 @@ namespace BlackJack.UnitTests
         }
 
         [Fact]
-        public void HandOfAAA_Equals_13()
+        public void TotalAandAandA_Equals_13()
         {
             Hand hand = new Hand(
                 new List<Card>
@@ -43,7 +43,7 @@ namespace BlackJack.UnitTests
         }
 
         [Fact]
-        public void HandOfAAAA_Equals_14()
+        public void Total_AandAandAandA_Equals_14()
         {
             Hand hand = new Hand(
                 new List<Card>
@@ -58,7 +58,7 @@ namespace BlackJack.UnitTests
         }
 
         [Fact]
-        public void HandOfAA9_Equals_21()
+        public void Total_AandAand9_Equals_21()
         {
             Hand hand = new Hand(
                 new List<Card>
@@ -72,7 +72,7 @@ namespace BlackJack.UnitTests
         }
 
         [Fact]
-        public void HandOfAAJ_Equals_12()
+        public void Total_AandAandJ_Equals_12()
         {
             Hand hand = new Hand(
                 new List<Card>
@@ -86,7 +86,7 @@ namespace BlackJack.UnitTests
         }
 
         [Fact]
-        public void HandOfAK_Equals_12()
+        public void Total_AandK_Equals_12()
         {
             Hand hand = new Hand(
                 new List<Card>
@@ -99,7 +99,7 @@ namespace BlackJack.UnitTests
         }
 
         [Fact]
-        public void HandOf22_Equals_4()
+        public void Total_2And2_Equals_4()
         {
             Hand hand = new Hand(
                 new List<Card>
@@ -112,7 +112,7 @@ namespace BlackJack.UnitTests
         }
 
         [Fact]
-        public void HandOfTQA_Equals_21()
+        public void Total_TandQandA_Equals_21()
         {
             Hand hand = new Hand(
                 new List<Card>
@@ -123,6 +123,21 @@ namespace BlackJack.UnitTests
                 });
 
             Assert.Equal(21, hand.Total);
+        }
+
+        [Fact]
+        public void Display_Equals_CardDisplayValues()
+        {
+            Hand hand = new Hand(
+                new List<Card>
+                {
+                    new Card(1, Suit.Spades, false),
+                    new Card(2, Suit.Clubs, false),
+                    new Card(3, Suit.Diamonds, false),
+                    new Card(4, Suit.Hearts, false)
+                });
+
+            Assert.Equal("A♠2♣3♦4♥", hand.Display);
         }
     }
 }
