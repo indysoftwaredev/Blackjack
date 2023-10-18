@@ -8,7 +8,7 @@ namespace Blackjack.App
 {
     public class Hand : List<Card>
     {
-        private static int TARGET_MAX_TOTAL = 21;
+        public static int TARGET_MAX_TOTAL = 21;
 
         public Hand(List<Card> cards)
         {
@@ -56,6 +56,11 @@ namespace Blackjack.App
             return count;
         }
 
+        public void TurnFaceUp()
+        {
+            this.ForEach(card => card.IsFaceDown = false);
+        }
+
         public string Display
         {
             get 
@@ -63,5 +68,7 @@ namespace Blackjack.App
                 return string.Join("", this.Select(c => c.Display));
             }
         }
+
+        public HandResult Result { get; set; }
     }
 }

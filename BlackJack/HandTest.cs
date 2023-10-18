@@ -139,5 +139,28 @@ namespace BlackJack.UnitTests
 
             Assert.Equal("A♠2♣3♦4♥", hand.Display);
         }
+
+        [Fact]
+        public void TurnFaceUp_TurnsAllCardsInHandFaceUp()
+        {
+            Hand hand = new Hand(
+                new List<Card>
+                {
+                    new Card(1, Suit.Spades, true),
+                    new Card(10, Suit.Diamonds, false)
+                });
+
+            hand.TurnFaceUp();
+
+            hand.ForEach(c => Assert.True(c.IsFaceUp));
+        }
+
+        [Fact]
+        public void HandResult_DefaultIsNone()
+        {
+            Hand hand = new Hand();
+
+            Assert.Equal(HandResult.None, hand.Result);
+        }
     }
 }
