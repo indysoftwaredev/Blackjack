@@ -100,39 +100,49 @@ namespace BlackJack.UnitTests
             Assert.Equal("King of Diamonds", deck.GetCardAt(51).Name);
         }
 
+        private List<string> GetCardNames(Deck deck)
+        {
+            List<string> cardNames = new List<string>();
+            for (int i = 0; i < 52; i++)
+            {
+                cardNames.Add(deck.GetCardAt(i).Name);
+            }
+            return cardNames;
+        }
+
+        private int CompareLists(List<string> list1, List<string> list2)
+        {
+
+            int differenceCount = 0;
+            for (int i = 0; i < list1.Count; i++)
+            {
+                if (!list1[i].Equals(list2[i]))
+                {
+                    differenceCount++;
+                }
+            }
+            return differenceCount;
+        }
+
         [Fact]
         public void NewDeck_Shuffle_MostCardsShouldNotBeInPosition()
         {
             Deck deck = new Deck();
 
             //get list of unshuffled
-            List<string> unshuffledCardNames = new List<string>();
-            for (int i = 0; i < 52; i++)
-            {
-                unshuffledCardNames.Add(deck.GetCardAt(i).Name);
-            }
+            List<string> unshuffledCardNames = GetCardNames(deck);
 
             deck.Shuffle();
 
-            List<string> shuffledCardNames = new List<String>();
-            for (int i = 0; i < 52; i++)
-            {
-                shuffledCardNames.Add(deck.GetCardAt(i).Name);
-            }
+            List<string> shuffledCardNames = GetCardNames(deck);
 
-            int postShuffleDifferenceCount = 0;
-            for (int i = 0; i < 52; i++)
-            {
-                if (!unshuffledCardNames[i].Equals(shuffledCardNames[i]))
-                {
-                    postShuffleDifferenceCount++;
-                }
-            }
+            int postShuffleDifferenceCount = 
+                CompareLists(unshuffledCardNames, shuffledCardNames);
             
             //Ran 1 million times without failure, 
             //though it is technically still possible.
             Assert.True(postShuffleDifferenceCount > 39, 
-                "Random sequencde test, chance of failure is estimated < .0001% - rerun test.");
+                "Random sequence test, chance of failure is estimated < .0001% - rerun test.");
 
         }
 
@@ -244,6 +254,77 @@ namespace BlackJack.UnitTests
 
             Assert.True(card.IsFaceDown);
 
+        }
+
+        [Fact]
+        public void Collect_Card_AppendsCardToBackOfDeck()
+        {
+            Deck deck = new Deck();
+            Card card = deck.Deal();
+            deck.Collect(card);
+
+            Assert.Equal(card, deck[deck.Count - 1]);
+        }
+
+        [Fact]
+        public void Construct_DealsUntilShuffle_DefaultsToSizeOfDeck()
+        {
+            Deck deck = new Deck();
+
+            Assert.Equal(52, deck.DealsRemainingUntilShuffleTriggered);
+        }
+
+        [Fact]
+        public void Deal_DealsUntilShuffle_Decrements()
+        {
+
+            Deck deck = new Deck();
+            deck.Deal();
+
+            Assert.Equal(51, deck.DealsRemainingUntilShuffleTriggered);
+        }
+
+        [Fact]
+        public void Deal_DealsUntilShuffleIsZero_Reshuffles()
+        {
+            Deck deck = new Deck();
+            List<string> unshuffledCardNames = GetCardNames(deck);
+
+
+            for (int i = 0; i < deck.Count;  i++)
+            {
+                deck.Collect(deck.Deal());
+            }
+
+            List<string> dealtCardNames = GetCardNames(deck);
+
+            //check that we have reordered the deck to its original state
+            Assert.Equal(0, CompareLists(unshuffledCardNames, dealtCardNames));
+
+            Assert.Equal(0, deck.DealsRemainingUntilShuffleTriggered);
+
+            Card card = deck.Deal(); //Take the top card
+            deck.Insert(0, card); //put the card back on the top
+
+            List<string> shuffledCardNames = GetCardNames(deck);
+
+            int differenceCount = CompareLists(unshuffledCardNames, shuffledCardNames);
+            Assert.True(differenceCount > 39, $"Difference is {differenceCount}, but should be higher.  Random sequence test, chance of failure is estimated < .0001% - rerun test.");
+        }
+
+        [Fact]
+        public void Deal_DealsUntilShuffle_ResetsAfterDealingWholeDeck()
+        {
+
+            Deck deck = new Deck();
+
+            for (int i = 0; i < deck.Count; i++)
+            {
+                deck.Collect(deck.Deal());
+            }
+
+            deck.Deal();
+            Assert.Equal(deck.Count, deck.DealsRemainingUntilShuffleTriggered);
         }
 
         

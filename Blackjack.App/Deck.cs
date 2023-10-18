@@ -10,6 +10,7 @@ namespace Blackjack.App
 {
     public class Deck : List<Card>
     {
+        private int _dealsRemainingUntilShuffleTriggered;
 
         public Deck() : this(new DefaultDeck())
         {
@@ -18,10 +19,15 @@ namespace Blackjack.App
 
         public Deck(IEnumerable<Card> collection) : base(collection)
         {
-            
+            _dealsRemainingUntilShuffleTriggered = collection.Count();
         }
 
-        public int NumberOfCards { get { return Count; }  }
+        public int NumberOfCards { get { return Count; } }
+
+        public int DealsRemainingUntilShuffleTriggered 
+        { 
+            get => _dealsRemainingUntilShuffleTriggered; 
+        }
 
         public void Collect(Hand hand)
         {
@@ -29,10 +35,21 @@ namespace Blackjack.App
             hand.Clear();
         }
 
+        public void Collect(Card card)
+        {
+            Add(card);
+        }
+
         public Card Deal()
         {
+            if(_dealsRemainingUntilShuffleTriggered == 0)
+            {
+                Shuffle();
+                _dealsRemainingUntilShuffleTriggered = this.Count();
+            }
             Card card = this.Take(1).First();
             this.RemoveAt(0);
+            _dealsRemainingUntilShuffleTriggered--;
             return card;
         }
 
