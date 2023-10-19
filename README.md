@@ -16,5 +16,5 @@ Homework Project for Praeses
 - Contains tests for core business logic
 
 **Additional Features**
+- Multi-player - Up to 7 players
 - Card displays using UTF-8 for suits: (♥♦♣♠)
-- Auto-reshuffle of deck once all cards have been dealt once (recurring).
