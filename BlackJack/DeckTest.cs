@@ -320,6 +320,7 @@ namespace BlackJack.UnitTests
 
             for (int i = 0; i < deck.Count; i++)
             {
+
                 deck.Collect(deck.Deal());
             }
 

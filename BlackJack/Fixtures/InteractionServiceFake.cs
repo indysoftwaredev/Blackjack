@@ -1,4 +1,5 @@
-﻿using Blackjack.App.Services;
+﻿using Blackjack.App;
+using Blackjack.App.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,11 @@ namespace BlackJack.UnitTests.Fixtures
         public void Display(string message)
         {
             
+        }
+
+        public HandAction GetHandAction()
+        {
+            return HandAction.Stand;
         }
 
         public int GetNumberOfPlayers(int maximumNumberOfPlayers)

@@ -13,6 +13,24 @@ namespace Blackjack.App.Services
             Console.WriteLine(message);
         }
 
+        public HandAction GetHandAction()
+        {
+            Display("1: Hit");
+            Display("2: Stand");
+            int actionNumber = ConversionService.ConvertStringToInt(Console.ReadLine());
+            if(actionNumber == 1)
+            {
+                return HandAction.Hit;
+            }
+            if(actionNumber == 2)
+            {
+                return HandAction.Stand;
+            }
+            Display($"Please enter either 1 or 2.");
+            return GetHandAction();
+
+        }
+
         public int GetNumberOfPlayers(int maximumNumberOfPlayers)
         {
             if(maximumNumberOfPlayers < 0) //invalid maximum

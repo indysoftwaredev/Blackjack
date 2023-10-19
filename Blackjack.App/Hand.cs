@@ -61,6 +61,11 @@ namespace Blackjack.App
             this.ForEach(card => card.IsFaceDown = false);
         }
 
+        public string DisplayWithTotal()
+        {
+            return $"{Display} = {Total}";
+        }
+
         public string Display
         {
             get 

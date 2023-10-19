@@ -22,5 +22,19 @@ namespace BlackJack.UnitTests
 
             Assert.Empty(dealer.Hand);
         }
+
+        [Fact]
+        public void ResetHand_SetsHandToEmpty()
+        {
+            Dealer dealer = new Dealer();
+            dealer.Hand = new Hand(new List<Card>
+            {
+                new Card(9, Suit.Diamonds),
+                new Card(8, Suit.Hearts)
+            });
+
+            dealer.ResetHand();
+            Assert.Empty(dealer.Hand);
+        }
     }
 }

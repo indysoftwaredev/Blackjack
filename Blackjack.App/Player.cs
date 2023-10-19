@@ -12,7 +12,15 @@ namespace Blackjack.App
 
         public Player()
         {
-            Hands.Add(new Hand(new List<Card>()));
+            ResetHands();
+        }
+
+        public void ResetHands()
+        {
+            Hands = new List<Hand>
+            {
+                new Hand(new List<Card>())
+            };
         }
     }
 }

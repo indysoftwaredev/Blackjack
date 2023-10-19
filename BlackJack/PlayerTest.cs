@@ -21,5 +21,37 @@ namespace BlackJack.UnitTests
             Player player = new Player();
             Assert.Single(player.Hands);
         }
+
+        [Fact]
+        public void ResetHands_ForcesPlayerToHaveSingleEmptyHand()
+        {
+            Player player = new Player();
+            player.Hands[0] = new Hand(new List<Card>
+            {
+                new Card(1, Suit.Spades),
+                new Card(8, Suit.Diamonds)
+            });
+            player.Hands.Add(new Hand(new List<Card>
+            {
+                new Card(1, Suit.Spades),
+                new Card(8, Suit.Diamonds)
+            }));
+
+            player.ResetHands();
+
+            Assert.Single(player.Hands);
+            Assert.Empty(player.Hands[0]);
+        }
+
+        [Fact]
+        public void ResetHands_ChangesHandResultToNone()
+        {
+            Player player = new Player();
+            player.Hands[0].Result = HandResult.Blackjack;
+
+            player.ResetHands();
+
+            Assert.Equal(HandResult.None, player.Hands[0].Result);
+        }
     }
 }

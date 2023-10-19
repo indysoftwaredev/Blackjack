@@ -162,5 +162,18 @@ namespace BlackJack.UnitTests
 
             Assert.Equal(HandResult.None, hand.Result);
         }
+
+        [Fact]
+        public void GetDisplayAndTotal_ReturnsDisplayAndTotal()
+        {
+            Hand hand = new Hand(
+                new List<Card>
+                {
+                    new Card(1, Suit.Spades, false),
+                    new Card(10, Suit.Diamonds, false)
+                });
+
+            Assert.Equal("A♠T♦ = 21", hand.DisplayWithTotal());
+        }
     }
 }

@@ -6,13 +6,9 @@ using System.Threading.Tasks;
 
 namespace Blackjack.App
 {
-    public enum HandResult
+    public enum HandAction
     {
-        None,
-        Blackjack,
-        Loss,
-        Push,
-        Bust,
-        Win
+        Hit,
+        Stand
     }
 }
