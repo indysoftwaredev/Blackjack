@@ -94,17 +94,17 @@ namespace BlackJack.UnitTests
                 });
 
             game.Players.Add(new Player());
-            game.Players[0].Hands[0] =
+            game.Players[0].Add(
                 new Hand(
                     new List<Card>
                     {
                         new Card(1, Suit.Spades),
                         new Card(10, Suit.Spades)
-                    });
+                    }));
 
             game.EvaluateStartingHands();
 
-            Assert.Equal(HandResult.Push, game.Players[0].Hands[0].Result);
+            Assert.Equal(HandResult.Push, game.Players[0].GetHand(0).Result);
         }
 
         [Fact]
@@ -119,17 +119,17 @@ namespace BlackJack.UnitTests
                 });
 
             game.Players.Add(new Player());
-            game.Players[0].Hands[0] =
+            game.Players[0].Add(
                 new Hand(
                     new List<Card>
                     {
                         new Card(1, Suit.Spades),
                         new Card(9, Suit.Spades)
-                    });
+                    }));
 
             game.EvaluateStartingHands();
 
-            Assert.Equal(HandResult.Loss, game.Players[0].Hands[0].Result);
+            Assert.Equal(HandResult.Loss, game.Players[0].GetHand(0).Result);
         }
 
         [Fact]
@@ -144,17 +144,17 @@ namespace BlackJack.UnitTests
                 });
 
             game.Players.Add(new Player());
-            game.Players[0].Hands[0] =
+            game.Players[0].Add(
                 new Hand(
-                    new List<Card>
-                    {
-                        new Card(1, Suit.Spades),
-                        new Card(10, Suit.Spades)
-                    });
+                    new List<Card> 
+                    { 
+                        new Card(1, Suit.Spades), 
+                        new Card(10, Suit.Spades) 
+                    }));
 
             game.EvaluateStartingHands();
 
-            Assert.Equal(HandResult.Blackjack, game.Players[0].Hands[0].Result);
+            Assert.Equal(HandResult.Blackjack, game.Players[0].GetHand(0).Result);
         }
 
         [Fact]
@@ -169,17 +169,17 @@ namespace BlackJack.UnitTests
                 });
 
             game.Players.Add(new Player());
-            game.Players[0].Hands[0] =
+            game.Players[0].Add(
                 new Hand(
                     new List<Card>
                     {
                         new Card(1, Suit.Spades),
                         new Card(9, Suit.Spades)
-                    });
+                    }));
 
             game.EvaluateStartingHands();
 
-            Assert.Equal(HandResult.None, game.Players[0].Hands[0].Result);
+            Assert.Equal(HandResult.None, game.Players[0].GetHand(0).Result);
         }
 
         [Fact]
@@ -204,36 +204,17 @@ namespace BlackJack.UnitTests
             Game game = new Game(interactionService);
 
             game.Players.Add(new Player());
-            game.Players[0].Hands[0] =
+            game.Players[0].Add(
                 new Hand(
                     new List<Card>
                     {
                         new Card(1, Suit.Spades),
                         new Card(9, Suit.Spades)
-                    });
+                    }));
 
             game.CollectHands();
 
-            Assert.Empty(game.Players[0].Hands[0]);
-        }
-
-        [Fact]
-        public void HasActivePlayers_OnePlayerWithNoneHandResult_EqualsOne()
-        {
-            Game game = new Game(interactionService);
-            game.Players.Add(new Player());
-            Assert.True(game.HasActivePlayers());
-        }
-
-        [Fact]
-        public void HasActivePlayers_TwoPlayersWithHandsWhichAreNotNoneResult_ReturnsFalse()
-        {
-            Game game = new Game(interactionService);
-            game.Players.Add(new Player());
-            game.Players.Add(new Player());
-            game.Players[0].Hands[0].Result = HandResult.Bust;
-            game.Players[1].Hands[0].Result = HandResult.Bust;
-            Assert.False(game.HasActivePlayers());
+            Assert.Empty(game.Players[0].GetHand(0));
         }
     }
 }

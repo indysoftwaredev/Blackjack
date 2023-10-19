@@ -93,5 +93,7 @@ namespace Blackjack.App
                 }
             }
         }
+
+        public int HandNumber { get; set; }
     }
 }

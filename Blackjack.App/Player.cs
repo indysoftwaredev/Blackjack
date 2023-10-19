@@ -8,11 +8,29 @@ namespace Blackjack.App
 {
     public class Player
     {
-        public List<Hand> Hands = new List<Hand>();
+        private List<Hand> Hands = new List<Hand>();
+
+        public int HandCount
+        {
+            get
+            {
+                return Hands.Count;
+            }
+        }
+
+        public Hand GetHand(int index) { return Hands[index]; }
+
+        public List<Hand> GetHands() { return Hands; }
 
         public Player()
         {
-            ResetHands();
+            //ResetHands();
+        }
+
+        public void Add(Hand hand)
+        {
+            hand.HandNumber = HandCount + 1;
+            Hands.Add(hand);
         }
 
         public Player(int playerNumber) : this()
@@ -24,10 +42,9 @@ namespace Blackjack.App
 
         public void ResetHands()
         {
-            Hands = new List<Hand>
-            {
-                new Hand(new List<Card>())
-            };
+            Hands = new List<Hand>();
         }
+
+
     }
 }

@@ -20,9 +20,38 @@ namespace Blackjack.App
         }
 
         public List<Player> Players { get; set; } = new List<Player>();
-
         public Dealer Dealer { get; set; } = new Dealer();
         public Deck Deck { get; set; } = DeckFactory.CreateDeck(6);
+
+        private void Display(string message)
+        {
+            _interactionService.Display(message);
+        }
+
+        private string HandNumberForDisplay(Player player, Hand hand)
+        {
+            return $"Player #{player.PlayerNumber}, Hand #{hand.HandNumber}";
+        }
+
+        private string HandNumberWithTotalForDisplay(Player player, Hand hand)
+        {
+            return $"{HandNumberForDisplay(player, hand)}: {hand.DisplayWithTotal}";
+        }
+
+        private string HandNumberWithTotalAndResultForDisplay(Player player, Hand hand)
+        {
+            return $"{HandNumberWithTotalForDisplay(player, hand)}: {hand.ResultDisplay}";
+        }
+
+        private string DealerShowsHandWithTotalForDisplay()
+        {
+            return $"Dealer Shows: {Dealer.Hand.DisplayWithTotal}";
+        }
+
+        private string DealerShowsHandWithoutTotalForDisplay()
+        {
+           return $"Dealer Shows: {Dealer.Hand.Display}";
+        }
 
         public void Run()
         {
@@ -33,8 +62,7 @@ namespace Blackjack.App
             {
                 Deal();
                 DisplayHands();
-                EvaluateStartingDealerHand();
-                EvaluateStartingPlayerHands();
+                EvaluateStartingHands();
 
                 if (ProcessDealerBlackjack())
                 {
@@ -62,24 +90,15 @@ namespace Blackjack.App
             }
         }
 
-        private void PressEnterToContinue()
-        {
-            Display("\nPress Enter to Continue");
-            Console.ReadLine();
-        }
-
-        private void Reset()
-        {
-            CollectHands();
-            Dealer.ResetHand();            
-            Players.ForEach(p => p.ResetHands());
-        }
-
         public void Setup()
         {
             int numberOfPlayers = _interactionService.GetNumberOfPlayers(MAX_PLAYERS);
+            CreatePlayers(numberOfPlayers);
+        }
 
-            for(int i = 0; i < numberOfPlayers; i++)
+        private void CreatePlayers(int numberOfPlayers)
+        {
+            for (int i = 0; i < numberOfPlayers; i++)
             {
                 Players.Add(new Player(i + 1));
             }
@@ -92,63 +111,48 @@ namespace Blackjack.App
 
         public void Deal()
         {
+            GiveEachPlayerEmptyHand();
+
             _interactionService.ClearDisplay();
             //_interactionService.Display("********** Dealing Hands...\n");
 
             //deal each player a card face up
-            Players.ForEach(p => p.Hands[0].Add(Deck.DealFaceUp()));
+            Players.ForEach(p => p.GetHand(0).Add(Deck.DealFaceUp()));
 
             //deal the dealer a card face up
             Dealer.Hand.Add(Deck.DealFaceUp());
             //Dealer.Hand.Add(new Card(1, Suit.Spades, false));
 
             //deal each player a card face up
-            Players.ForEach(p => p.Hands[0].Add(Deck.DealFaceUp()));
+            Players.ForEach(p => p.GetHand(0).Add(Deck.DealFaceUp()));
 
             //deal the dealer a card face down
             Dealer.Hand.Add(Deck.Deal());
             //Dealer.Hand.Add(new Card(10, Suit.Hearts, true));
         }
 
+        private void GiveEachPlayerEmptyHand()
+        {
+            Players.ForEach(p => p.Add(new Hand()));
+        }
+
         private void DisplayHands()
         {
-            foreach(Player player in Players)
+            foreach (Player player in Players)
             {
-                int handCount = 0;
-                foreach(Hand hand in player.Hands)
+                foreach (Hand hand in player.GetHands())
                 {
-                    handCount++;
-                    string playerHandId = $"Player #{player.PlayerNumber}, Hand #{handCount}";
-                    Display($"{playerHandId}, {hand.DisplayWithTotal}");
+                    Display($"{HandNumberWithTotalForDisplay(player, hand)}");
                 }
             }
 
             Display($"\nDealer: {Dealer.Hand.Display}");
         }
 
-        private void DisplayHandsWithResults()
-        {
-            Display("\n********** Results **********"); 
-            Dealer.Hand.TurnFaceUp();
-            Display($"\nDealer: {Dealer.Hand.DisplayWithTotal}");
-
-            foreach (Player player in Players)
-            {
-                int handCount = 0;
-                foreach (Hand hand in player.Hands)
-                {
-                    handCount++;
-                    string playerHandId = $"Player #{player.PlayerNumber}, Hand #{handCount}";
-                    Display($"{playerHandId}, {hand.DisplayWithTotal}: {hand.ResultDisplay}");
-                }
-            }
-        }
-
         public void EvaluateStartingHands()
         {
             EvaluateStartingDealerHand();
             EvaluateStartingPlayerHands();
-
         }
 
         private void EvaluateStartingDealerHand()
@@ -163,49 +167,16 @@ namespace Blackjack.App
         {
             foreach (Player player in Players)
             {
-                foreach (Hand hand in player.Hands)
+                foreach (Hand hand in player.GetHands())
                 {
                     hand.Result = EvaluateStartingPlayerHandAgainstDealerHand(hand);
                 }
             }
         }
-        private void EvaluateFinalHands()
-        {
-            foreach (Player player in Players)
-            {
-                foreach (Hand hand in player.Hands)
-                {
-                    hand.Result = EvaluateAgainstDealer(hand);
-                }
-            }
-        }
-
-        private HandResult EvaluateAgainstDealer(Hand hand)
-        {
-            
-            if (Dealer.Hand.Result == HandResult.Bust)
-            {
-                if(hand.Result == HandResult.Blackjack) { return hand.Result; }
-                if(hand.Total < Hand.TARGET_MAX_TOTAL) { return HandResult.Win; }
-                if(hand.Total > Hand.TARGET_MAX_TOTAL) { return HandResult.Loss; }                
-            }
-            else
-            {
-                if (hand.Result == HandResult.Bust) { return HandResult.Loss; }
-                if (hand.Result == HandResult.Blackjack) 
-                {
-                    return Dealer.Hand.Result == HandResult.Blackjack ? HandResult.Push : HandResult.Blackjack;
-                }
-                if (Dealer.Hand.Total == hand.Total) { return HandResult.Push; }
-                if (Dealer.Hand.Total < hand.Total) { return HandResult.Win; }
-                if (Dealer.Hand.Total > hand.Total) { return HandResult.Loss; }
-            }
-            return HandResult.Win;
-        }
 
         private HandResult EvaluateStartingPlayerHandAgainstDealerHand(Hand playerHand)
         {
-            if(playerHand.Total == Hand.TARGET_MAX_TOTAL)
+            if (playerHand.Total == Hand.TARGET_MAX_TOTAL)
             {
                 if (Dealer.Hand.Result == HandResult.Blackjack)
                 {
@@ -231,25 +202,21 @@ namespace Blackjack.App
 
         public bool ProcessDealerBlackjack()
         {
-            if(Dealer.Hand.Result == HandResult.Blackjack)
+            if (Dealer.Hand.Result == HandResult.Blackjack)
             {
                 DisplayDealerBlackjack();
 
                 foreach (Player player in Players)
                 {
-
-                    int handCount = 0;
-                    foreach (Hand hand in player.Hands)
+                    foreach (Hand hand in player.GetHands())
                     {
-                        handCount++;
-                        string playerHandId = $"Player #{player.PlayerNumber}, Hand #{handCount}";
                         if (hand.Result == HandResult.Push)
                         {
-                            Display($"{playerHandId}, {hand.DisplayWithTotal} pushes");
+                            Display($"{HandNumberWithTotalForDisplay(player, hand)} pushes");
                         }
                         else
                         {
-                            Display($"{playerHandId}, {hand.DisplayWithTotal} loses");
+                            Display($"{HandNumberWithTotalForDisplay(player, hand)} loses");
                         }
                     }
                 }
@@ -264,35 +231,34 @@ namespace Blackjack.App
             Display($"\nDealer has Blackjack: {Dealer.Hand.Display}");
         }
 
-        private void ShowDealerHand()
+        private void Reset()
         {
-            _interactionService.Display("\n**********");
-            Dealer.Hand.TurnFaceUp();
-            DisplayDealerShowsHand();
-        }
-
-        private void DisplayDealerShowsHand()
-        {
-            Display($"\nDealer Shows: {Dealer.Hand.DisplayWithTotal}");
+            CollectHands();
+            Dealer.ResetHand();
+            Players.ForEach(p => p.ResetHands());
         }
 
         public void CollectHands()
         {
             Deck.Collect(Dealer.Hand);
-            Players.ForEach(p => p.Hands.ForEach(h => Deck.Collect(h)));
+            Players.ForEach(p => p.GetHands().ForEach(h => Deck.Collect(h)));
+        }
+
+        private void PressEnterToContinue()
+        {
+            Display("\nPress Enter to Continue");
+            Console.ReadLine();
         }
 
         private void ProcessPlayerBlackjacks()
         {
             foreach (Player player in Players)
             {
-                int handCount = 0;
-                foreach(Hand hand in player.Hands) 
-                { 
-                    handCount++;
-                    if( hand.Result == HandResult.Blackjack)
+                foreach (Hand hand in player.GetHands())
+                {
+                    if (hand.Result == HandResult.Blackjack)
                     {
-                        Display($"Player #{player.PlayerNumber}, Hand #{handCount} has Blackjack!");
+                        Display($"{HandNumberForDisplay(player, hand)} has Blackjack!");
                     }
                 }
             }
@@ -300,48 +266,51 @@ namespace Blackjack.App
 
         private void ProcessPlayerActions()
         {
-            foreach(Player player in Players)
+            foreach (Player player in Players)
             {
-                int handCount = 0;
-                foreach(Hand hand in player.Hands)
+                foreach (Hand hand in player.GetHands())
                 {
-                    handCount++;
                     bool stand = false;
-                    while(!stand && hand.Result == HandResult.None)
+                    while (!stand && hand.Result == HandResult.None)
                     {
-                        Display("\n**********");
-                        string playerHandId = $"\nPlayer #{player.PlayerNumber}, Hand #{handCount}";
+                        Display($"\n********** {DealerShowsHandWithoutTotalForDisplay()}");
 
-                        Display($"{playerHandId}: {hand.DisplayWithTotal}");
+                        Display($"{HandNumberWithTotalForDisplay(player, hand)}");
 
                         HandAction action = _interactionService.GetHandAction();
-                        switch(action)
+                        switch (action)
                         {
                             case HandAction.Hit:
                                 Display("\nPlayer Hits");
                                 Hit(hand);
-                                CheckForBust(hand); 
+                                CheckForBust(hand);
                                 break;
                             case HandAction.Stand:
                                 Display("\nPlayer Stands");
-                                stand = true; 
+                                stand = true;
                                 break;
                         }
 
-                        if(hand.Total == Hand.TARGET_MAX_TOTAL)
+                        if (hand.Total == Hand.TARGET_MAX_TOTAL)
                         {
-                            Display($"{playerHandId}: {hand.DisplayWithTotal}");
+                            Display(HandNumberWithTotalForDisplay(player, hand));
                             Display($"\nPlayer has {Hand.TARGET_MAX_TOTAL}... standing");
                             stand = true;
                         }
-                        if(hand.Result == HandResult.Bust)
+                        if (hand.Result == HandResult.Bust)
                         {
-                            Display($"{playerHandId}: {hand.DisplayWithTotal}: Bust!");
+                            Display($"{HandNumberWithTotalForDisplay(player, hand)}: Bust!");
                         }
                     }
                 }
             }
         }
+
+        private void Hit(Hand hand)
+        {
+            hand.Add(Deck.DealFaceUp());
+        }
+
         private void CheckForBust(Hand hand)
         {
             if (hand.Total > Hand.TARGET_MAX_TOTAL)
@@ -350,50 +319,96 @@ namespace Blackjack.App
             }
         }
 
-        private void ProcessDealerActions()
-        {            
-            while (Dealer.Hand.Total < 17)
-            {
-                Display("\nDealer Hits");
-                Hit(Dealer.Hand);
-                DisplayDealerShowsHand();
-            }
-
-            if (Dealer.Hand.Total > Hand.TARGET_MAX_TOTAL)
-            {
-                Display("\nDealer Busts\n");
-                Dealer.Hand.Result = HandResult.Bust;
-            } 
-            else
-            {
-                Display("\nDealer Stands\n");
-            }
-        }
-
-        private void Display(string message)
-        {
-            _interactionService.Display(message);
-        }
-
 
         public bool HasActivePlayers()
         {
-            foreach(Player player in Players)
+            foreach (Player player in Players)
             {
-                foreach (Hand hand in player.Hands)
+                foreach (Hand hand in player.GetHands())
                 {
                     if (hand.Result == HandResult.None)
                     {
-                        return true;      
+                        return true;
                     }
                 }
             }
             return false;
         }
 
-        private void Hit(Hand hand)
+        private void ShowDealerHand()
         {
-            hand.Add(Deck.DealFaceUp());
+            _interactionService.Display("\n**********");
+            Dealer.Hand.TurnFaceUp();
+            Display($"{DealerShowsHandWithTotalForDisplay()}");
+        }
+
+        private void ProcessDealerActions()
+        {
+            while (Dealer.Hand.Total < 17)
+            {
+                Display("\nDealer Hits");
+                Hit(Dealer.Hand);
+                Display($"{DealerShowsHandWithTotalForDisplay()}");
+            }
+
+            if (Dealer.Hand.Total > Hand.TARGET_MAX_TOTAL)
+            {
+                Display("\nDealer Busts");
+                Dealer.Hand.Result = HandResult.Bust;
+            }
+            else
+            {
+                Display("\nDealer Stands");
+            }
+        }
+
+        private void EvaluateFinalHands()
+        {
+            foreach (Player player in Players)
+            {
+                foreach (Hand hand in player.GetHands())
+                {
+                    hand.Result = EvaluateAgainstDealer(hand);
+                }
+            }
+        }
+
+        private HandResult EvaluateAgainstDealer(Hand hand)
+        {
+
+            if (Dealer.Hand.Result == HandResult.Bust)
+            {
+                if (hand.Result == HandResult.Blackjack) { return hand.Result; }
+                if (hand.Total < Hand.TARGET_MAX_TOTAL) { return HandResult.Win; }
+                if (hand.Total > Hand.TARGET_MAX_TOTAL) { return HandResult.Loss; }
+            }
+            else
+            {
+                if (hand.Result == HandResult.Bust) { return HandResult.Loss; }
+                if (hand.Result == HandResult.Blackjack)
+                {
+                    return Dealer.Hand.Result == HandResult.Blackjack ? HandResult.Push : HandResult.Blackjack;
+                }
+                if (Dealer.Hand.Total == hand.Total) { return HandResult.Push; }
+                if (Dealer.Hand.Total < hand.Total) { return HandResult.Win; }
+                if (Dealer.Hand.Total > hand.Total) { return HandResult.Loss; }
+            }
+            return HandResult.Win;
+        }
+
+        private void DisplayHandsWithResults()
+        {
+            Display("\n********** Results **********"); 
+            Dealer.Hand.TurnFaceUp();
+            Display($"{DealerShowsHandWithTotalForDisplay()}");
+
+            foreach (Player player in Players)
+            {
+                foreach (Hand hand in player.GetHands())
+                {
+                    Display(HandNumberWithTotalAndResultForDisplay(player, hand));
+                }
+            }
         }
     }
 }

@@ -16,22 +16,22 @@ namespace BlackJack.UnitTests
         }
 
         [Fact]
-        public void Construct_HasOneEmptyHandInListOfHands()
+        public void Construct_HasEmptyListOfHands()
         {
             Player player = new Player();
-            Assert.Single(player.Hands);
+            Assert.Equal(0, player.HandCount);
         }
 
         [Fact]
-        public void ResetHands_ForcesPlayerToHaveSingleEmptyHand()
+        public void ResetHands_ForcesPlayerToZeroHands()
         {
             Player player = new Player();
-            player.Hands[0] = new Hand(new List<Card>
+            player.Add(new Hand(new List<Card>
             {
                 new Card(1, Suit.Spades),
                 new Card(8, Suit.Diamonds)
-            });
-            player.Hands.Add(new Hand(new List<Card>
+            }));
+            player.Add(new Hand(new List<Card>
             {
                 new Card(1, Suit.Spades),
                 new Card(8, Suit.Diamonds)
@@ -39,19 +39,7 @@ namespace BlackJack.UnitTests
 
             player.ResetHands();
 
-            Assert.Single(player.Hands);
-            Assert.Empty(player.Hands[0]);
-        }
-
-        [Fact]
-        public void ResetHands_ChangesHandResultToNone()
-        {
-            Player player = new Player();
-            player.Hands[0].Result = HandResult.Blackjack;
-
-            player.ResetHands();
-
-            Assert.Equal(HandResult.None, player.Hands[0].Result);
+            Assert.Equal(0, player.HandCount);
         }
 
         [Fact]
@@ -68,7 +56,15 @@ namespace BlackJack.UnitTests
             Player player = new Player(1);
 
             Assert.Equal(1, player.PlayerNumber);
+        }
 
+        [Fact]
+        public void Add_SingleHand_NumbersHandAccordingly()
+        {
+            Player player = new Player();
+            player.Add(new Hand());
+
+            Assert.Equal(1, player.GetHand(0).HandNumber);
         }
     }
 }
