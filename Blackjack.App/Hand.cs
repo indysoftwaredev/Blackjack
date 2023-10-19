@@ -75,5 +75,20 @@ namespace Blackjack.App
         }
 
         public HandResult Result { get; set; }
+        public string ResultDisplay 
+        { 
+            get
+            {
+                switch(Result)
+                {
+                    case HandResult.Blackjack: return "Blackjack";
+                    case HandResult.Bust: return "Bust";
+                    case HandResult.Push: return "Push";
+                    case HandResult.Win: return "Win";
+                    case HandResult.Loss: return "Loss";
+                    default: return "";
+                }
+            }
+        }
     }
 }

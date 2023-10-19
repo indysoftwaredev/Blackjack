@@ -11,5 +11,7 @@ namespace Blackjack.App.Services
         public int GetNumberOfPlayers(int maximumNumberOfPlayers);
         public void Display(string message);
         public HandAction GetHandAction();
+
+        public void ClearDisplay();
     }
 }

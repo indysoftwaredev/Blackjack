@@ -10,6 +10,11 @@ namespace BlackJack.UnitTests.Fixtures
 {
     internal class InteractionServiceFake : IInteractionService
     {
+        public void ClearDisplay()
+        {
+            
+        }
+
         public void Display(string message)
         {
             

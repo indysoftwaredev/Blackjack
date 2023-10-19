@@ -175,5 +175,61 @@ namespace BlackJack.UnitTests
 
             Assert.Equal("A♠T♦ = 21", hand.DisplayWithTotal());
         }
+
+        [Fact]
+        public void ResultDisplay_None_EqualsEmptyString()
+        {
+            Hand hand = new Hand();
+            hand.Result = HandResult.None;
+
+            Assert.Equal("", hand.ResultDisplay);
+        }
+
+        [Fact]
+        public void ResultDisplay_Blackjack_EqualsBlackJack()
+        {
+            Hand hand = new Hand();
+            hand.Result = HandResult.Blackjack;
+
+            Assert.Equal("Blackjack", hand.ResultDisplay);
+
+        }
+
+        [Fact]
+        public void ResultDisplay_Bust_EqualsBust()
+        {
+            Hand hand = new Hand();
+            hand.Result = HandResult.Bust;
+
+            Assert.Equal("Bust", hand.ResultDisplay);
+
+        }
+
+        [Fact]
+        public void ResultDisplay_Push_EqualsPush()
+        {
+            Hand hand = new Hand();
+            hand.Result = HandResult.Push;
+
+            Assert.Equal("Push", hand.ResultDisplay);
+        }
+
+        [Fact]
+        public void ResultDisplay_Win_EqualsWin()
+        {
+            Hand hand = new Hand();
+            hand.Result = HandResult.Win;
+
+            Assert.Equal("Win", hand.ResultDisplay);
+        }
+
+        [Fact]
+        public void ResultDisplay_Loss_EqualsLoss()
+        {
+            Hand hand = new Hand();
+            hand.Result = HandResult.Loss;
+
+            Assert.Equal("Loss", hand.ResultDisplay);
+        }
     }
 }

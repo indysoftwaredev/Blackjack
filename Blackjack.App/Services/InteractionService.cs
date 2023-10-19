@@ -8,6 +8,11 @@ namespace Blackjack.App.Services
 {
     public class InteractionService : IInteractionService
     {
+        public void ClearDisplay()
+        {
+            Console.Clear();
+        }
+
         public void Display(string message)
         {
             Console.WriteLine(message);
