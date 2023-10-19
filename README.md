@@ -14,3 +14,7 @@ Homework Project for Praeses
 
 **BlackJack.UnitTests**
 - Contains tests for core business logic
+
+**Additional Features**
+- Card displays using UTF-8 for suits: (♥♦♣♠)
+- Auto-reshuffle of deck once all cards have been dealt once (recurring).
