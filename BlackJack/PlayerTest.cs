@@ -53,5 +53,22 @@ namespace BlackJack.UnitTests
 
             Assert.Equal(HandResult.None, player.Hands[0].Result);
         }
+
+        [Fact]
+        public void Construct_PlayerNumberIsZeroByDefault()
+        {
+            Player player = new Player();
+
+            Assert.Equal(0, player.PlayerNumber);
+        }
+
+        [Fact]
+        public void Construct_PlayerNumber_AssignsThroughConstructor()
+        {
+            Player player = new Player(1);
+
+            Assert.Equal(1, player.PlayerNumber);
+
+        }
     }
 }

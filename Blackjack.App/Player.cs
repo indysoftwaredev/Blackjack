@@ -15,6 +15,13 @@ namespace Blackjack.App
             ResetHands();
         }
 
+        public Player(int playerNumber) : this()
+        {
+            PlayerNumber = playerNumber;
+        }
+
+        public int PlayerNumber { get; set; }
+
         public void ResetHands()
         {
             Hands = new List<Hand>
