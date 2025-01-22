@@ -1,5 +1,5 @@
-# PraesesBlackjack
-Homework Project for Praeses
+# Blackjack
+Homework Project
 
 **Technology Stack**
 - .Net Core 7
